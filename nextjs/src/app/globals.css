@@ -34,17 +34,15 @@ body {
     sans-serif;
 }
 
-/* Add your global styles here */
+
 .container {
-  display: flex;
   min-height: 100vh;
 }
 
 .chatHistory {
-  width: 100%;
+  width: 250px;
   background-color: #232222; /* Dark background for the sidebar */
   overflow-y: auto; /* Makes it scrollable if many sessions */
-  padding: 20px;
 }
 
 .currentChat {
@@ -56,15 +54,20 @@ body {
 
 .sessionItem {
   cursor: pointer;
-  padding: 10px 20px;
-  border-bottom: 1px solid rgba(220, 216, 216, 0.66); /* Slightly lighter line for separation */
+  padding: 7px 70px;
+  border-bottom: 1px solid rgba(44, 36, 36, 0.69); /* Slightly lighter line for separation */
   color: #fff; /* White text color for visibility */
   font-size: 16px;
   transition: background-color 0.3s; /* Smooth transition for hover effect */
+  background-color: rgba(0, 0, 0, 0.28);
+  align-items: center;
 }
+
+
 .sessionItem:hover {
   background-color: #2d2f33; /* Darker shade on hover for better interaction */
 }
 
-/* ... other styles ... */
+
+
 

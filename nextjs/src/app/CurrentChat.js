@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './CurrentChat.module.css';
 export default function CurrentChat({ activeSession }) {
+
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [eventSource, setEventSource] = useState(null);  // State to manage EventSource
@@ -36,7 +37,7 @@ const loadChatHistory = async (sessionId) => {
         }).toString();
 
         const eventSource = new EventSource(`http://127.0.0.1:5000/get_response?${queryParams}`);
-        setEventSource(eventSource);  // Set the event source in state
+            setEventSource(eventSource); // Update the state to the new EventSource instance
 
 
         let fullResponse = '';  // Initialize empty string to accumulate response
@@ -90,12 +91,18 @@ const loadChatHistory = async (sessionId) => {
     return (
         <div className={styles.chatContainer}>
             <div className={styles.messages}>
-                {messages.map((message, index) => (
-                    <div key={index} className={styles.message}>
-                        <strong>{message.from === 'user' ? 'You' : 'Bot'}:</strong>
-                        <span>{message.text}</span>
+                {messages.length > 0 ? (
+                    messages.map((message, index) => (
+                        <div key={index} className={styles.message}>
+                            <strong>{message.from === 'user' ? 'You' : 'Bot'}:</strong>
+                            <span>{message.text}</span>
+                        </div>
+                    ))
+                ) : (
+                    <div className={styles.startText}>
+                        <h1>Ask a question!</h1>
                     </div>
-                ))}
+                )}
             </div>
             <div className={styles.inputArea}>
                 <input
