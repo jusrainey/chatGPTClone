@@ -21,10 +21,23 @@ export default function Home() {
     }
   };
 
+
+  const deleteSession = async (sessionId) => {
+    setLoading(true);
+    try {
+        // Correct the URL format
+        await fetch(`http://127.0.0.1:5000/delete_session/${sessionId}`, { method: 'DELETE' });
+        handleNewSession();  // Refresh the list or create a new session
+    } catch (error) {
+        console.error('Error deleting session:', error);
+    }
+    setLoading(false);
+};
+
   return (
     <RootLayout>
       <div style={{ display: 'flex', minHeight: '100vh' }}>
-        <div style={{ width: '15%', backgroundColor: '#232222' }}>
+        <div className='chatHistory'>
           <ChatHistory setActiveSession={handleSessionClick} />
         </div>
 

@@ -78,9 +78,12 @@
 }
 
 .newSessionButton {
+    text-align: center;
     display: block;
     width: 100%;
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
     background-color: #4CAF50;
     color: white;
     border: none;

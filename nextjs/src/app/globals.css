@@ -53,6 +53,7 @@ body {
 }
 
 .sessionItem {
+
   cursor: pointer;
   padding: 7px 70px;
   border-bottom: 1px solid rgba(44, 36, 36, 0.69); /* Slightly lighter line for separation */
@@ -61,11 +62,40 @@ body {
   transition: background-color 0.3s; /* Smooth transition for hover effect */
   background-color: rgba(0, 0, 0, 0.28);
   align-items: center;
-}
 
+}
 
 .sessionItem:hover {
   background-color: #2d2f33; /* Darker shade on hover for better interaction */
+}
+
+.deleteButton {
+
+    font-size: 10px;
+    text-align: center;
+
+    padding-right: 10px;
+    padding-left: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    color: #ffffff;
+    background-color: red;
+    border: #1c1b1b;
+    cursor: pointer;
+
+}
+
+.sessionItem:hover .deleteButton {
+    opacity: 1;
+    visibility: visible;  /* Make the button fully visible on hover */
+}
+
+.chatHistory{
+    display: block;
+    align-items: center;
+    text-align: center;
+
 }
 
 
