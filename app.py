@@ -97,15 +97,21 @@ def new_session_id():
 def get_sessions():
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT MAX(session_id) FROM chats")
+    cursor.execute("SELECT DISTINCT session_id FROM chats")
+    sessions = cursor.fetchall()
+    session_ids = [{'id':session[0], "name":f"Session {session[0]}" } for session in sessions]
+    return jsonify({'sessions': session_ids})
 
-    max_id = cursor.fetchone()[0]
-    print(max_id)
-    # Format the sessions for JSON output
-    session_list = [{'id': session, "name":f"Session: {session}" }
-                    for session in range(1,max_id+1)]
-    print(session_list)
-    return jsonify({'sessions': session_list})
+
+@app.route('/delete_session', methods=['DELETE'])
+def delete_session():
+    session_id = request.args.get('session_id')
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM chats WHERE session_id = ?", (session_id,))
+    db.commit()
+    return jsonify({"Deleted Session":session_id})
+
 
 
 
