@@ -3,6 +3,8 @@ import styles from './CurrentChat.module.css';
 export default function CurrentChat({ activeSession }) {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
+    const [eventSource, setEventSource] = useState(null);  // State to manage EventSource
+
     useEffect(() => {
     setMessages([]);  // Clear messages when the session changes
     // Optionally, load chat history for the new session
@@ -34,6 +36,8 @@ const loadChatHistory = async (sessionId) => {
         }).toString();
 
         const eventSource = new EventSource(`http://127.0.0.1:5000/get_response?${queryParams}`);
+        setEventSource(eventSource);  // Set the event source in state
+
 
         let fullResponse = '';  // Initialize empty string to accumulate response
 
@@ -75,6 +79,13 @@ const loadChatHistory = async (sessionId) => {
             console.error("Error saving chat:", error);
         }
     };
+       const stopStreaming = () => {
+        if (eventSource) {
+            eventSource.close();  // Close the EventSource connection
+            setEventSource(null); // Reset the EventSource state
+            console.log("Streaming stopped by the user.");
+        }
+    };
 
     return (
         <div className={styles.chatContainer}>
@@ -96,6 +107,8 @@ const loadChatHistory = async (sessionId) => {
                     onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                 />
                 <button onClick={sendMessage} className={styles.sendButton}>Send</button>
+                <button onClick={stopStreaming} className={styles.stopButton}>Stop</button>
+
             </div>
         </div>
     );
