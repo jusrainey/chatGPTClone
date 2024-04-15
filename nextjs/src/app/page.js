@@ -8,12 +8,6 @@ import CurrentChat from '@/app/CurrentChat';
 export default function Home() {
   const [activeSession, setActiveSession] = useState(null);
 
-  // Dummy chat sessions for illustration purposes
-  const chatSessions = [
-    { id: '1', name: 'Session 1' },
-    { id: '2', name: 'Session 2' },
-    // ... other sessions
-  ];
 
   const handleSessionClick = (session) => {
     // If the session is new, create a session ID
@@ -31,7 +25,7 @@ export default function Home() {
     <RootLayout>
       <div style={{ display: 'flex', minHeight: '100vh' }}>
         <div style={{ width: '15%', backgroundColor: '#232222' }}>
-          <ChatHistory sessions={chatSessions} setActiveSession={handleSessionClick} />
+          <ChatHistory setActiveSession={handleSessionClick} />
         </div>
 
         <div style={{ flexGrow: 1, backgroundColor: '#000000' }}>

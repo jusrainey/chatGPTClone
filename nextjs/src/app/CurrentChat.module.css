@@ -6,6 +6,7 @@
   border: 1px solid #3d3939;
   border-radius: 8px;
   overflow: hidden;
+
 }
 
 .messages {
@@ -16,12 +17,15 @@
 }
 
 .message {
+    word-wrap: break-word; /* Ensures words do not overflow their container */
   margin-bottom: 10px;
   padding: 8px;
   background-color: rgb(0, 0, 0);
   border-radius: 5px;
   max-width: 80%;
   color:white;
+    flex-grow: 1;
+
 }
 
 .message strong {
@@ -58,4 +62,42 @@
 
 .sendButton:hover {
   background-color: #073f00;
+}
+.stopButton {
+    padding: 8px 16px;
+    margin-left: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.stopButton:hover {
+    background-color: darkred;
+}
+
+.newSessionButton {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.newSessionButton:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+
+.startText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;  /* Take up all available space in the container */
+    font-size: 24px;
+    color: #666;  /* A gentle gray color */
+    text-align: center;
 }
