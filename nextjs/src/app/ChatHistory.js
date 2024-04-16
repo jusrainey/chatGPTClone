@@ -47,7 +47,6 @@ export default function ChatHistory({ setActiveSession, activeSessionId }) {
     fetchSessions()
 };
 
-
     return (
         <div className='chatHistory'>
             <button onClick={handleNewSession} disabled={loading} className={styles.newSessionButton}>
