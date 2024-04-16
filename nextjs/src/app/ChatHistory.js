@@ -7,13 +7,13 @@ export default function ChatHistory({ setActiveSession, activeSessionId }) {
 
     useEffect(() => {
         fetchSessions();
-        handleNewSession();// Function to fetch existing sessions
+        handleNewSession();
     }, []);
 
     useEffect(() => {
     const intervalId = setInterval(() => {
         fetchSessions()
-    }, 10000); // Update every 10 seconds
+    }, 5000);
 
     return () => clearInterval(intervalId);
 }, []);
@@ -38,13 +38,13 @@ export default function ChatHistory({ setActiveSession, activeSessionId }) {
     setLoading(true);
     console.log('Deleting Session:',sessionId)
     try {
-        // Correct the URL format
         await fetch(`http://127.0.0.1:5000/delete_session?session_id=${sessionId}`, { method: 'DELETE' });
-        handleNewSession();  // Refresh the list or create a new session
+        handleNewSession();
     } catch (error) {
         console.error('Error deleting session:', error);
     }
     setLoading(false);
+    fetchSessions()
 };
 
 
@@ -59,7 +59,7 @@ export default function ChatHistory({ setActiveSession, activeSessionId }) {
                        <button
                         className="deleteButton"
                         onClick={(e) => {
-                            e.stopPropagation();  // Prevent activating the session
+                            e.stopPropagation();
                             deleteSession(session.id);
                         }}
                     >

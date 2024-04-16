@@ -42,40 +42,39 @@ body {
 
 .chatHistory {
   width: 250px;
-  background-color: #232222; /* Dark background for the sidebar */
-  overflow-y: auto; /* Makes it scrollable if many sessions */
+    min-width: 250px;
+  background-color: #232222;
+  overflow-y: auto;
 }
 
 .currentChat {
 
-  background-color: #000000; /* Black background for the chat display */
-  color: white; /* Ensure text is white for readability */
+  background-color: #000000;
+  color: white;
   padding: 20px;
-    /* Padding for spacing around the text */
+
 }
 
 .sessionItem {
 
   cursor: pointer;
   padding: 7px 70px;
-  border-bottom: 1px solid rgba(44, 36, 36, 0.69); /* Slightly lighter line for separation */
-  color: #fff; /* White text color for visibility */
+  border-bottom: 1px solid rgba(44, 36, 36, 0.69);
+  color: #fff;
   font-size: 16px;
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  transition: background-color 0.3s;
   background-color: rgba(0, 0, 0, 0.28);
   align-items: center;
 
 }
 
 .sessionItem:hover {
-  background-color: #2d2f33; /* Darker shade on hover for better interaction */
+  background-color: #2d2f33;
 }
 
 .deleteButton {
-
     font-size: 10px;
     text-align: center;
-
     padding-right: 10px;
     padding-left: 10px;
     opacity: 0;
@@ -90,7 +89,7 @@ body {
 
 .sessionItem:hover .deleteButton {
     opacity: 1;
-    visibility: visible;  /* Make the button fully visible on hover */
+    visibility: visible;
 }
 
 .chatHistory{
