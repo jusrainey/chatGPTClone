@@ -10,6 +10,14 @@ export default function ChatHistory({ setActiveSession, activeSessionId }) {
         handleNewSession();// Function to fetch existing sessions
     }, []);
 
+    useEffect(() => {
+    const intervalId = setInterval(() => {
+        fetchSessions()
+    }, 10000); // Update every 10 seconds
+
+    return () => clearInterval(intervalId);
+}, []);
+
     const fetchSessions = async () => {
         const response = await fetch('http://127.0.0.1:5000/get_sessions');
         const data = await response.json();
@@ -23,7 +31,7 @@ export default function ChatHistory({ setActiveSession, activeSessionId }) {
         const newSessionId = data.next_session_id;
         setActiveSession({ id: newSessionId, name: `Session ${newSessionId}` });
         setLoading(false);
-        fetchSessions();
+
     };
 
     const deleteSession = async (sessionId) => {
