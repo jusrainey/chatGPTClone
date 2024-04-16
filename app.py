@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, g, Response
 import openai
 from openai import OpenAI
 import sqlite3
-import uuid
 import os
 from dotenv import load_dotenv
 import requests
@@ -10,6 +9,7 @@ import json
 from flask_cors import CORS
 
 load_dotenv()
+openai_api_key = os.environ.get("OPENAI_KEY")
 
 app = Flask(__name__)
 CORS(app)
@@ -41,9 +41,6 @@ def get_db():
 
 @app.route('/get_response', methods=['GET'])
 def bot_response():
-
-
-
     session_id = request.args.get('session_id')
     user_input = request.args.get('user_input')
     print(f"User Input:{user_input[:15]}....\n")
@@ -57,10 +54,8 @@ def bot_response():
             messages.append({"role": "user", "content": chat_row['user_input']})
             messages.append({"role": "assistant", "content": chat_row['bot_response']})
 
-    messages.append({"role": "user", "content": user_input})
 
-    KEY = os.environ.get("OPENAI_KEY")
-    openai_api_key = KEY
+    messages.append({"role": "user", "content": user_input})
 
     print(messages)
 
@@ -77,6 +72,24 @@ def bot_response():
             yield f"data: {json.dumps({'bot_response': re})}\n\n"
 
     return Response(generate(), mimetype='text/event-stream')
+
+
+def generate_title(user_input):
+
+    messages = [{"role": "system", "content": "You generate short titles for chat sessions based on user input"}]
+    messages.append({"role": "user", "content": user_input[:20]})
+
+    def generate():
+        openai.api_key = openai_api_key
+        t = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            stream=False
+        )
+        return t
+
+    title = generate()
+    return title
 
 
 def check_session_id(session_id):
@@ -119,7 +132,7 @@ def new_session_id():
     cursor = db.cursor()
     cursor.execute("SELECT MAX(session_id) FROM chats")
     max_id = cursor.fetchone()[0]
-    next_session_id = max_id + 1 if max_id is not None else 1  # Start from 1 if table is empty
+    next_session_id = max_id + 1 if max_id is not None else 1
     return jsonify({'next_session_id': next_session_id})
 
 

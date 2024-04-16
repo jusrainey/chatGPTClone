@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import styles from './CurrentChat.module.css';
-import { fetchSessions } from './ChatHistory'
+
 export default function CurrentChat({ activeSession }) {
 
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
-    const [eventSource, setEventSource] = useState(null);  // State to manage EventSource
+    const [eventSource, setEventSource] = useState(null);
 
 
     useEffect(() => {
-    setMessages([]);  // Clear messages when the session changes
-    // Optionally, load chat history for the new session
+    setMessages([]);
+
     loadChatHistory(activeSession.id);
 }, [activeSession]);
 
@@ -30,11 +30,7 @@ const loadChatHistory = async (sessionId) => {
     }
 };
 
-
-
     const sendMessage = () => {
-
-
         if (!input.trim()) return;
 
         const queryParams = new URLSearchParams({
@@ -43,29 +39,29 @@ const loadChatHistory = async (sessionId) => {
         }).toString();
 
         const eventSource = new EventSource(`http://127.0.0.1:5000/get_response?${queryParams}`);
-            setEventSource(eventSource); // Update the state to the new EventSource instance
+            setEventSource(eventSource);
 
 
-        let fullResponse = '';  // Initialize empty string to accumulate response
+        let fullResponse = '';
 
         eventSource.onmessage = function(event) {
             const newMessage = JSON.parse(event.data);
             if (newMessage.bot_response) {
-                fullResponse += newMessage.bot_response;  // Accumulate the response
+                fullResponse += newMessage.bot_response;
                 setMessages(prev => [...prev.slice(0, -1), { from: 'bot', text: fullResponse }]);
             }
         };
 
-        setMessages(prev => [...prev, { from: 'user', text: input }, { from: 'bot', text: '' }]);  // Add user input and initial bot response
+        setMessages(prev => [...prev, { from: 'user', text: input }, { from: 'bot', text: '' }]);
 
         eventSource.onerror = function() {
             eventSource.close();
             console.log("EventSource failed.");
-            saveChatToDatabase(activeSession.id, input, fullResponse);  // Save chat after receiving full response
+            saveChatToDatabase(activeSession.id, input, fullResponse);
 
         };
 
-        setInput(''); // Clear input after sending
+        setInput('');
     };
     const saveChatToDatabase = async (sessionId, userInput, botResponse) => {
         try {
@@ -88,8 +84,8 @@ const loadChatHistory = async (sessionId) => {
     };
        const stopStreaming = () => {
         if (eventSource) {
-            eventSource.close();  // Close the EventSource connection
-            setEventSource(null); // Reset the EventSource state
+            eventSource.close();
+            setEventSource(null);
             console.log("Streaming stopped by the user.");
         }
     };
