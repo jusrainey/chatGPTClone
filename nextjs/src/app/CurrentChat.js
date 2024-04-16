@@ -29,7 +29,6 @@ const loadChatHistory = async (sessionId) => {
         console.error("Error fetching chat history:", error);
     }
 };
-
     const sendMessage = () => {
         if (!input.trim()) return;
 
