@@ -37,6 +37,7 @@ body {
 
 .container {
   min-height: 100vh;
+
 }
 
 .chatHistory {
@@ -46,10 +47,11 @@ body {
 }
 
 .currentChat {
-  flex-grow: 1;
+
   background-color: #000000; /* Black background for the chat display */
   color: white; /* Ensure text is white for readability */
-  padding: 20px; /* Padding for spacing around the text */
+  padding: 20px;
+    /* Padding for spacing around the text */
 }
 
 .sessionItem {

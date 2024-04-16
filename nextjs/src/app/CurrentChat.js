@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import styles from './CurrentChat.module.css';
+import { fetchSessions } from './ChatHistory'
 export default function CurrentChat({ activeSession }) {
 
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [eventSource, setEventSource] = useState(null);  // State to manage EventSource
+
 
     useEffect(() => {
     setMessages([]);  // Clear messages when the session changes
@@ -28,7 +30,11 @@ const loadChatHistory = async (sessionId) => {
     }
 };
 
+
+
     const sendMessage = () => {
+
+
         if (!input.trim()) return;
 
         const queryParams = new URLSearchParams({

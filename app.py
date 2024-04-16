@@ -41,18 +41,34 @@ def get_db():
 
 @app.route('/get_response', methods=['GET'])
 def bot_response():
+
+
+
     session_id = request.args.get('session_id')
     user_input = request.args.get('user_input')
     print(f"User Input:{user_input[:15]}....\n")
 
-    KEY = os.environ.get("OPENAI_KEY2")
+    messages = [{"role": "system", "content": "You are a helpful assistant."}]
+
+    session_data = check_session_id(session_id)
+
+    if session_data:
+        for chat_row in session_data:
+            messages.append({"role": "user", "content": chat_row['user_input']})
+            messages.append({"role": "assistant", "content": chat_row['bot_response']})
+
+    messages.append({"role": "user", "content": user_input})
+
+    KEY = os.environ.get("OPENAI_KEY")
     openai_api_key = KEY
+
+    print(messages)
 
     def generate():
         openai.api_key = openai_api_key
         stream = openai.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": user_input}],
+            messages=messages,
             stream=True
         )
 
@@ -61,6 +77,20 @@ def bot_response():
             yield f"data: {json.dumps({'bot_response': re})}\n\n"
 
     return Response(generate(), mimetype='text/event-stream')
+
+
+def check_session_id(session_id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM chats WHERE session_id = ?",(session_id,))
+    sessions = cursor.fetchall()
+    if sessions:
+        print(f"{session_id} - ID exist")
+        return sessions
+    else:
+        print(f"{session_id} - ID does NOT exist")
+        return False
+
 
 
 @app.route('/get_history/<session_id>', methods=['GET'])
@@ -111,9 +141,6 @@ def delete_session():
     cursor.execute("DELETE FROM chats WHERE session_id = ?", (session_id,))
     db.commit()
     return jsonify({"Deleted Session":session_id})
-
-
-
 
 
 if __name__ == '__main__':
